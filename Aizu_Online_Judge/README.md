@@ -14,5 +14,10 @@
 (https://onlinejudge.u-aizu.ac.jp/status/users/testrs865)
 
 2. 下までスクロールして"User's Submissions"をクリックします。
+(https://github.com/testrs865/Learning/issues/3#issue-3714303443)
 
 3. 下記のACやREなどをクリックすると提出したコードが見れます。
+(https://github.com/testrs865/Learning/issues/3#issuecomment-3636121683)
+
+4. 下までスクロールして"Open problem"をクリックすれば問題が見れます。
+(https://github.com/testrs865/Learning/issues/3#issuecomment-3636121683)
