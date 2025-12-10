@@ -17,7 +17,7 @@
 (https://github.com/testrs865/Learning/issues/3#issue-3714303443)
 
 3. 下記のACやREなどをクリックすると提出したコードが見れます。
-(https://github.com/testrs865/Learning/issues/3#issuecomment-3636121683)
+(https://github.com/user-attachments/assets/5edddac2-5233-49e7-b288-70f8c02d7bdf)
 
 4. 下までスクロールして"Open problem"をクリックすれば問題が見れます。
 (https://github.com/testrs865/Learning/issues/3#issuecomment-3636121683)
