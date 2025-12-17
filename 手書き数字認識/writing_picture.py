@@ -1,121 +1,90 @@
 import pygame
-from pathlib import Path
+import torch
+from config import *
+from model_10_15 import SimpleCNN, predict_image
 
-pygame.init()
+def writing():
+    objects = setup()
 
-# 画面設定
-WIDTH, HEIGHT = 560, 280
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("手書きアプリ")
+    screen = objects["screen"]
+    font = objects["font"]
+    label_font = objects["label_font"]
+    clear_button_rect = objects["clear_button_rect"]
+    save_button_rect = objects["save_button_rect"]
+    textbox_rect = objects["textbox_rect"]
+    canvas_rect = objects["canvas_rect"]
+    canvas_surface = objects["canvas_surface"]
 
-# 色設定
-BLACK = (0, 0, 0)              # 描画可能領域
-WHITE = (255, 255, 255)        # ペンの色
-BUTTON_COLOR = (200, 0, 0)     # ボタン本体
-BUTTON_TEXT_COLOR = (255, 255, 255)
-BUTTON_BG_COLOR = (150, 150, 150)  # ボタン以外の背景（灰色）
-BRUSH_RADIUS = 5
+    clear_text = font.render("クリア", True, BUTTON_TEXT_COLOR)
+    save_text = font.render("識別", True, BUTTON_TEXT_COLOR)
+    label_text = "出力結果"
+    textbox_text = f""
 
-# 描画状態
-drawing = False
-last_pos = None  # 前回のマウス座標（線をつなぐ用）
+    drawing = False
+    last_pos = None
+    clock = pygame.time.Clock()
+    running = True
 
-# 日本語フォント（macOS の例）
-font = pygame.font.Font("/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc", 20)
-label_font = pygame.font.Font("/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc", 30)
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-# 説明テキスト（ラベル）
-label_text = "出力結果"
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if clear_button_rect.collidepoint(event.pos):
+                    canvas_surface.fill(BLACK)
+                    textbox_text = f""
 
-# ボタンサイズ
-BUTTON_WIDTH = 100
-BUTTON_HEIGHT = 40
-BUTTON_SPACING = 20  # ボタン間の縦スペース
+                elif save_button_rect.collidepoint(event.pos):
+                    pygame.image.save(canvas_surface, SAVE_PATH)
+                    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# クリアボタン（右上）
-clear_button_rect = pygame.Rect(WIDTH - BUTTON_WIDTH - 20, 20, BUTTON_WIDTH, BUTTON_HEIGHT)
-# 保存ボタンはクリアボタンの下
-save_button_rect = pygame.Rect(WIDTH - BUTTON_WIDTH - 20, 20 + BUTTON_HEIGHT + BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT)
+                    model = SimpleCNN().to(device)
+                    model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
 
-# ボタンテキスト
-clear_button_text = font.render("クリア", True, BUTTON_TEXT_COLOR)
-save_button_text = font.render("識別", True, BUTTON_TEXT_COLOR)
+                    result = predict_image(model, DEFAULT_IMAGE_PATH, device)
+                    #print(f"予測結果: {result}")
+                    textbox_text = f"{result}"
 
-# テキストボックス設定（保存ボタンの下）
-TEXTBOX_WIDTH = 100
-TEXTBOX_HEIGHT = 40
-textbox_rect = pygame.Rect(
-    WIDTH - TEXTBOX_WIDTH - 20,
-    save_button_rect.bottom + 50,
-    TEXTBOX_WIDTH,
-    TEXTBOX_HEIGHT
-)
-textbox_text = "test"
+                elif canvas_rect.collidepoint(event.pos):
+                    drawing = True
+                    mx, my = event.pos
+                    last_pos = (mx - canvas_rect.x, my - canvas_rect.y)
 
-# 描画可能領域（ボタン領域を除外）
-canvas_rect = pygame.Rect(0, 0, WIDTH - BUTTON_WIDTH - 40, HEIGHT)  # 左側にキャンバス確保
+            elif event.type == pygame.MOUSEBUTTONUP:
+                drawing = False
+                last_pos = None
 
-# キャンバス専用 Surface
-canvas_surface = pygame.Surface(canvas_rect.size)
-canvas_surface.fill(BLACK)
+        if drawing and canvas_rect.collidepoint(pygame.mouse.get_pos()):
+            mx, my = pygame.mouse.get_pos()
+            x = mx - canvas_rect.x
+            y = my - canvas_rect.y
+            if last_pos:
+                pygame.draw.line(canvas_surface, WHITE, last_pos, (x, y), BRUSH_RADIUS * 2)
+            last_pos = (x, y)
 
-clock = pygame.time.Clock()
-running = True
+        # 描画
+        screen.fill(BUTTON_BG_COLOR)
+        screen.blit(canvas_surface, canvas_rect.topleft)
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        pygame.draw.rect(screen, BUTTON_COLOR, clear_button_rect)
+        screen.blit(clear_text, (clear_button_rect.x + 10, clear_button_rect.y + 5))
 
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if clear_button_rect.collidepoint(event.pos):               #クリア
-                canvas_surface.fill(BLACK)
-            elif save_button_rect.collidepoint(event.pos):              #保存して識別
-                # キャンバス部分だけ保存
-                surface_to_save = canvas_surface.copy()
-                pygame.image.save(surface_to_save, "drawing.png")
-            elif canvas_rect.collidepoint(event.pos):
-                drawing = True
-                mx, my = event.pos
-                last_pos = (mx - canvas_rect.x, my - canvas_rect.y)
+        pygame.draw.rect(screen, BUTTON_COLOR, save_button_rect)
+        screen.blit(save_text, (save_button_rect.x + 10, save_button_rect.y + 5))
 
-        elif event.type == pygame.MOUSEBUTTONUP:
-            drawing = False
-            last_pos = None
+        label_surface = label_font.render(label_text, True, WHITE)
+        screen.blit(label_surface, (textbox_rect.x - 5, textbox_rect.y - 35))
 
-    # 描画
-    if drawing and canvas_rect.collidepoint(pygame.mouse.get_pos()):
-        mx, my = pygame.mouse.get_pos()
-        canvas_x = mx - canvas_rect.x
-        canvas_y = my - canvas_rect.y
-        if last_pos is not None:
-            pygame.draw.line(canvas_surface, WHITE, last_pos, (canvas_x, canvas_y), BRUSH_RADIUS*2)
-        else:
-            pygame.draw.circle(canvas_surface, WHITE, (canvas_x, canvas_y), BRUSH_RADIUS)
-        last_pos = (canvas_x, canvas_y)
+        pygame.draw.rect(screen, WHITE, textbox_rect)
+        pygame.draw.rect(screen, BLACK, textbox_rect, 2)
+        textbox_surface = font.render(textbox_text, True, BLACK)
+        screen.blit(textbox_surface, (textbox_rect.x + 35, textbox_rect.y + 10))
 
-    # 画面更新
-    screen.fill(BUTTON_BG_COLOR)                   # 背景灰色
-    screen.blit(canvas_surface, canvas_rect.topleft)  # キャンバス貼り付け
+        pygame.display.flip()
+        clock.tick(60)
 
-    # ボタン描画
-    pygame.draw.rect(screen, BUTTON_COLOR, clear_button_rect)
-    screen.blit(clear_button_text, (clear_button_rect.x + 10, clear_button_rect.y + 5))
+    pygame.quit()
 
-    pygame.draw.rect(screen, BUTTON_COLOR, save_button_rect)
-    screen.blit(save_button_text, (save_button_rect.x + 10, save_button_rect.y + 5))
-
-    # 説明テキスト描画
-    label_surface = label_font.render(label_text, True, WHITE)
-    screen.blit(label_surface, (textbox_rect.x - 5, textbox_rect.y - label_surface.get_height() - 5))
-
-    # テキストボックス描画
-    pygame.draw.rect(screen, WHITE, textbox_rect)
-    pygame.draw.rect(screen, BLACK, textbox_rect, 2)
-    textbox_surface = font.render(textbox_text, True, BLACK)
-    screen.blit(textbox_surface, (textbox_rect.x + 5, textbox_rect.y + 5))
-
-    pygame.display.flip()
-    clock.tick(60)
-
-pygame.quit()
+if __name__ == "__main__":
+    writing()
