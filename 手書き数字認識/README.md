@@ -3,7 +3,7 @@
 - AI技術の理解を深めるため、ChatGPTを活用しながらプロジェクトを作成しました
 
 ## Dataset
-datasetの10~15はMNISTの0~5を組み合わせて作成しました。
+datasetの10\~15はMNISTの0\~5を組み合わせて作成しました。
 
 ## 学習曲線
 <img width="1200" height="500" alt="Image" src="https://github.com/user-attachments/assets/d6466376-e740-4277-8070-be627cc8937f" />
