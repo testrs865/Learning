@@ -42,7 +42,7 @@ SAVE_PATH = DATA_DIR / "save_image" / "drawing.png"
 def setup():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("手書きアプリ")
+    pygame.display.set_caption("手書き数字認識アプリ(10~15)")
 
     # フォント
     font = pygame.font.Font("/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc", 20)
