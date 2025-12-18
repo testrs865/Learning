@@ -2,7 +2,7 @@ from pathlib import Path
 import pygame
 
 # ===== パス =====
-BASE_DIR = Path.home()
+BASE_DIR = Path.home()                  #windowsなら"C:"
 DATA_DIR = BASE_DIR /"Learning"/"手書き数字認識"
 
 MODEL_PATH = DATA_DIR /"model"/"model.pth"
