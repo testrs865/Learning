@@ -37,6 +37,7 @@ def writing():
 
                 elif save_button_rect.collidepoint(event.pos):
                     pygame.image.save(canvas_surface, SAVE_PATH)
+                    
                     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
                     model = SimpleCNN().to(device)
