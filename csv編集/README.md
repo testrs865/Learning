@@ -18,8 +18,8 @@
 
 ## 実行方法
 1. 本リポジトリをクローンします
-2. config.pyにて**BASE_DIR**をmacOSなら**Path.home()**に、windowsなら**C:**にしてください
-3. 上記のディレクトリ下に**/"csv"/"sample.csv"**を配置してください
+2. config.pyにて**BASE_DIR**をmacOSなら**Path.home()** に、windowsなら**C:** にしてください
+3. 上記のディレクトリ下に **/"csv"/"sample.csv"**　を配置してください
 
 ## 工夫した点
 - csv モジュールを使わず、ファイルを1文字ずつ読み込んで解析
