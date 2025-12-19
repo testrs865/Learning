@@ -31,6 +31,7 @@ def store_csv(two_D_list):
                 else:
                     f.write(",")
                 comma_flag = 0
+    print("保存しました。")
 
 if __name__ == "__main__":
     store_csv()
