@@ -1,7 +1,12 @@
-- AIZU ONLINE JUDGE (https://onlinejudge.u-aizu.ac.jp/home) の学習記録です
-
+## AIZU ONLINE JUDGEについて
 - AIZU ONLINE JUDGEとは会津大学が運営しているオンラインジャッジシステムです
 
+---
+
+## 目的
+- AIZU ONLINE JUDGE (https://onlinejudge.u-aizu.ac.jp/home) の学習記録です
+
+## 提出先
 - pythonで提出したアカウント名は"testrs865"です。下記がそのURLです
 
 (https://onlinejudge.u-aizu.ac.jp/status/users/testrs865)
@@ -10,7 +15,9 @@
 
 (https://onlinejudge.u-aizu.ac.jp/status/users/mysoft_rs123)
 
-- 私の提出履歴の見方は以下のようになります
+---
+
+## 提出物の見方
 
 1. 下記サイト(pythonで解いたアカウント)にアクセスします
 
@@ -22,6 +29,7 @@
 3. 下記のACやREなどをクリックすると提出したコードが見れます
 
 ACという青色の文字は受理されたという意味であり、REなどの赤文字の意味は不受理で不正解という意味です
+
 <img width="647" height="559" alt="Image" src="https://github.com/user-attachments/assets/5edddac2-5233-49e7-b288-70f8c02d7bdf" />
 
 4. 下までスクロールして"Open problem"をクリックすれば問題が見れます
