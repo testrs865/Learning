@@ -19,21 +19,27 @@ def main_manu(two_D_list):
         print("4 : 保存")
         print("0 : 終了")
         print("-------------------------------------------")
-        x = int(input("番号を入力してください : "))
 
-        if x == 0:
-            print("編集を終了しました。")
-            sys.exit(0)
-        elif x == 1:
-            sr.show_record(two_D_list)
-        elif x == 2:
-            sf.show_field(two_D_list)
-        elif x == 3:
-            ec.edit_csv(two_D_list)
-        elif x == 4:
-            sc.store_csv(two_D_list)
-        else:
-            print("入力番号が認識されません。")
+        num = input("番号を入力してください : ")
+
+        try:
+            x = int(num)
+            if x == 0:
+                print("編集を終了しました。")
+                sys.exit(0)
+            elif x == 1:
+                sr.show_record(two_D_list)
+            elif x == 2:
+                sf.show_field(two_D_list)
+            elif x == 3:
+                ec.edit_csv(two_D_list)
+            elif x == 4:
+                sc.store_csv(two_D_list)
+            else:
+                print("入力番号が認識されません。")
+                print("もう一度入力してください")
+        except ValueError: 
+            print("数字以外の文字が入力されています。")
             print("もう一度入力してください")
 
 if __name__ == "__main__":
