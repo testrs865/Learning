@@ -10,4 +10,8 @@ for i in range(n):
         j -= 1
     array[j + 1] = v
 
-    print(array)
+    for k in range(n):
+        print(f"{array[k]}", end="")
+        if k != n:
+            print(end=" ")
+    print("")
