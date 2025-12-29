@@ -12,6 +12,6 @@ for i in range(n):
 
     for k in range(n):
         print(f"{array[k]}", end="")
-        if k != n:
+        if k != n - 1:
             print(end=" ")
     print("")
