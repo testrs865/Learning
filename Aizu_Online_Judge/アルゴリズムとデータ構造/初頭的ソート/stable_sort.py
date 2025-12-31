@@ -39,6 +39,6 @@ for i in range(n):
 
 print("")
 if stable_flag:
-    print("Not Stable")
+    print("Not stable")
 else:
     print("Stable")
