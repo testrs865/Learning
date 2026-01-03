@@ -1,10 +1,29 @@
 import numpy as np
 from config import CSV_DIR
+from config import UI_DIR
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6.QtWidgets import QPushButton
 
 #--------------------------------------------------------------------
 #4：保存
 #--------------------------------------------------------------------
-def store_csv(two_D_list):
+store_window = None
+
+def store_csv_ui(two_D_list):
+    global store_window
+
+    loader = QUiLoader()
+    ui_file = QFile(UI_DIR/"store.ui")
+    if not ui_file.open(QFile.ReadOnly):
+        #print("UIファイルを開けません")
+        return
+    store_window = loader.load(ui_file)  # QFile を渡す
+    ui_file.close()
+
+    #OKボタンへアクセス
+    ok_button : QPushButton = store_window.findChild(QPushButton, "ok_button")
+
     arr_2d = np.array(two_D_list)
     row_len, col_len = arr_2d.shape
     with open(CSV_DIR, mode="w") as f:
@@ -31,4 +50,7 @@ def store_csv(two_D_list):
                 else:
                     f.write(",")
                 comma_flag = 0
-    print("保存しました。")
+
+    ok_button.clicked.connect(store_window.close)
+
+    store_window.show()
