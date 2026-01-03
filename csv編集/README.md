@@ -6,13 +6,11 @@
 
 ## 制作目的
 
-- Pythonの基礎文法（条件分岐・ループ・関数）を、  
-  実際に動作するアプリケーションの中で理解・定着させるため
+- Pythonの基礎文法（条件分岐・ループ・関数）を、実際に動作するアプリケーションの中で理解・定着させるため
 - CSVファイルの仕様を理解し、業務データを安全に扱うための基礎を身につけるため
 - 入力ミスや不正データに対するエラーハンドリングを実装し、
   実務を想定した堅牢な処理を意識するため
-- 学習目的として、CUIでの処理を理解した上でGUI化し、  
-  保守性・拡張性を意識したプログラム構成を体験するため
+- 学習目的として、CUIでの処理を理解した上でGUI化し、保守性・拡張性を意識したプログラム構成を体験するため
 
 ※ 学習目的で作成したコードです。  
 可読性と処理の流れが分かりやすい設計を重視しています。
@@ -44,8 +42,7 @@
 1. pip install PySide6 numpyをコマンドプロンプト(ターミナル)にて実行し、PySide6, numpyをインストールしてください
 2. 本リポジトリをクローンします
 3. config.pyにて**BASE_DIR**をmacOSなら**Path.home()** に、windowsなら**C:** にしてください
-4. 上記のディレクトリ下に **/"csv"/"sample.csv"**　を配置してください
-5. main.pyを実行してください
+4. main.pyを実行してください
 
 ---
 
@@ -66,6 +63,8 @@
 
 <img width="552" height="528" alt="Image" src="https://github.com/user-attachments/assets/eae4c95a-8f7b-4bda-93b7-1b7e937c5632" />
 
+
 <img width="555" height="530" alt="Image" src="https://github.com/user-attachments/assets/25f90fe3-0241-4e21-8b64-209a314229b1" />
+
 
 <img width="280" height="255" alt="Image" src="https://github.com/user-attachments/assets/fbbb5b4a-46ca-47bd-8a3b-7f5139061374" />
