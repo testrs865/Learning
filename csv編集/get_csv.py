@@ -15,7 +15,7 @@ def get_csv():
         double_quotation_count = 0  #フィールド内にあるダブルクォーテーションを数えます
 
         while True:
-            f.seek(i)
+            #f.seek(i)
             c = f.read(1)
 
             if not c:               #c == EOFの時break
