@@ -13,14 +13,14 @@ elif os_name == "Windows":
 else:
     rcParams['font.family'] = 'DejaVu Sans'
 
-# ===== ① 銘柄コード入力 =====
+# ===== 銘柄コード入力 =====
 code = input("銘柄コードを入力してください（例：4755.T）: ")
 
-# ===== ② 期間入力 =====
+# ===== 期間入力 =====
 start_date = input("開始日を入力してください（例：2023-01-01）: ")
 end_date = input("終了日を入力してください（例：2024-01-01）: ")
 
-# ===== ③ 企業名取得（安全化）=====
+# ===== 企業名取得（安全化）=====
 ticker = yf.Ticker(code)
 try:
     name = ticker.info.get("longName", code)
@@ -31,7 +31,7 @@ try:
 except:
     company_name = code
 
-# ===== ④ データ取得 =====
+# ===== データ取得 =====
 df = yf.download(code, start=start_date, end=end_date)
 
 # データ取得チェック
@@ -39,7 +39,7 @@ if df.empty:
     print("データ取得失敗：銘柄コードや日付を確認してください")
     exit()
 
-# ===== ⑤ 移動平均 =====
+# ===== 移動平均 =====
 df["MA5"] = df["Close"].rolling(window=5).mean()
 df["MA25"] = df["Close"].rolling(window=25).mean()
 
@@ -48,7 +48,9 @@ df["Signal"] = 0
 df.loc[df["MA5"] > df["MA25"], "Signal"] = 1
 df["Cross"] = df["Signal"].diff()
 
-# ===== ⑥ グラフ（改善版）=====
+
+
+# ===== グラフ（改善版）=====
 fig, ax1 = plt.subplots(figsize=(12, 6))
 
 # 株価
@@ -59,6 +61,10 @@ ax1.plot(df.index, df["MA25"], label="25日平均", linestyle="--")
 # ゴールデンクロス（買いシグナル）
 buy = df[df["Cross"] == 1]
 ax1.scatter(buy.index, buy["Close"], marker="^", s=100, color="red", label="Buy Signal")
+
+# デッドクロス（売りシグナル）
+sell = df[df["Cross"] == -1]
+ax1.scatter(sell.index, sell["Close"], marker="v", s=100, color="blue", label="Sell Signal")
 
 ax1.set_xlabel("日付")
 ax1.set_ylabel("株価（円）")
