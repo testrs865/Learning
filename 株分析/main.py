@@ -42,6 +42,8 @@ def get_company_name(code):
     except:
         company_name = code
 
+    return company_name
+
 # 移動平均計算
 def calculate_moving_averages(df):
     df["MA5"] = df["Close"].rolling(window=5).mean()
@@ -49,7 +51,7 @@ def calculate_moving_averages(df):
     return df
 
 # RSI計算
-def clculate_rsi(df):
+def calculate_rsi(df):
     delta = df["Close"].diff()
     gain = delta.clip(lower=0)
     loss = -delta.clip(upper=0)
@@ -120,13 +122,29 @@ def plot_stock_chart(df, company_name, start, end):
 
 def main():
     set_font()
-    code, start, end = get_user_input()
-    df = get_stock_data(code, start, end)
-    company_name = get_company_name(code)
-    df = calculate_moving_averages(df)
-    df = clculate_rsi(df)
-    df = generate_cross_signals(df)
-    plot_stock_chart(df, company_name, start, end)
+
+    while True:
+        while True:
+            code, start, end = get_user_input()
+            df = get_stock_data(code, start, end)
+
+            if df.empty == True:
+                print("データを取得できませんでした。もう一度入力してください。")
+                continue 
+
+            break 
+    
+        company_name = get_company_name(code)
+        df = calculate_moving_averages(df)
+        df = calculate_rsi(df)
+        df = generate_cross_signals(df)
+        plot_stock_chart(df, company_name, start, end)
+
+        another = input("別の銘柄を分析しますか？ (y/n): ")
+
+        if another.lower() != "y":
+            print("終了します")
+            break
 
 if __name__ == "__main__":
     main()
