@@ -2,6 +2,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import platform
+import pandas as pd
 
 
 # フォント設定
